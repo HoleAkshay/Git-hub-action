@@ -41,9 +41,9 @@ war {
     archiveFileName = 'NimbusPay.war'
 }
 
-bootRun {
-    args = ["--spring.config.additional-location=file:C:/Users/akshay.hole/Desktop/EConfig/app-config.properties"]
-}
+//bootRun {
+//   args = ["--spring.config.additional-location=file:C:/Users/akshay.hole/Desktop/EConfig/app-config.properties"]
+//}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
