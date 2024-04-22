@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.4'
+    id 'io.spring.dependency-management' version '1.1.4'
+    /*used to integrate Protocol Buffers support into gradle project*/
+    id 'com.google.protobuf' version '0.9.4'
+    id 'war'
+}
+
+protobuf {
+    /*used to set the version of the Protobuf compiler*/
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.1"
+    }
+    /*code generator(java code) from .proto files that works alongside the protocol buffers compiler*/
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.63.0'
+        }
+    }
+    /*ensures that gRPC plugin is applied to all protobuf generation tasks*/
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+group = 'io.nimbuspay'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '21'
+}
+
+repositories {
+    mavenCentral()
+}
+
+war {
+    archiveFileName = 'NimbusPay.war'
+}
+
+bootRun {
+    args = ["--spring.config.additional-location=file:C:/Users/akshay.hole/Desktop/EConfig/app-config.properties"]
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    /*necessary runtime support for gRPC communication over the Netty transport.*/
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.63.0'
+    /*support for serializing and deserializing protocol buffer messages used in gRPC communication.*/
+    implementation 'io.grpc:grpc-protobuf:1.63.0'
+    implementation 'io.grpc:grpc-stub:1.63.0'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+    implementation 'org.postgresql:postgresql'
+    //implementation group: 'org.hibernate.orm', name: 'hibernate-core', version: '6.4.1.Final'
+    //implementation 'javax.persistence:javax.persistence-api:2.2'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
